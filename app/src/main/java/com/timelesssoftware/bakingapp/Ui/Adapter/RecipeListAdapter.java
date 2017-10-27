@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.timelesssoftware.bakingapp.R;
 import com.timelesssoftware.bakingapp.Ui.Fragment.RecipeSteps;
+import com.timelesssoftware.bakingapp.Utils.Glide.GlideApp;
 import com.timelesssoftware.bakingapp.Utils.Retrofit.Model.RecipeListModel;
 
 import java.util.List;
@@ -40,7 +43,16 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
         RecipeListModel recipeListModel = recipeListModels.get(position);
         holder.mRecipeName.setText(recipeListModel.name);
-        holder.setImage(getImage(recipeListModel.getId()));
+        //Load image from local storage
+        if (recipeListModel.getImage() == null || recipeListModel.getImage().isEmpty()) {
+            holder.setImage(getImage(recipeListModel.getId()));
+        } else {
+            Glide.with(holder.itemView.getContext())
+                    .load(recipeListModel.getImage())
+                    .apply(new RequestOptions()
+                            .placeholder(R.drawable.placeholder))
+                    .into(holder.mRecipeImag);
+        }
     }
 
     private int getImage(int id) {

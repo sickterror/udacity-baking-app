@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
             @Override
             public void onFailure(Call<List<RecipeListModel>> call, Throwable t) {
                 Log.w("recipeListW", t);
+                Snackbar.make(recipeListRv, R.string.main_activty_loading_error, Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListAdapter
         startActivity(intent);
     }
 
-    public void initRecylcerView(List<RecipeListModel> listModels){
+    public void initRecylcerView(List<RecipeListModel> listModels) {
         int count = 0;
         for (RecipeListModel recipeListModel : listModels) {
             recipeListModels.add(recipeListModel);

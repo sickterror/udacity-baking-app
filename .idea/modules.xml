@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bakingapp.iml" filepath="$PROJECT_DIR$/bakingapp.iml" />
+      <module fileurl="file://C:\Users\Luka\Desktop\udacity-baking-app\app\app.iml" filepath="C:\Users\Luka\Desktop\udacity-baking-app\app\app.iml" />
+      <module fileurl="file://C:\Users\Luka\Desktop\udacity-baking-app\bakingapp.iml" filepath="C:\Users\Luka\Desktop\udacity-baking-app\bakingapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/udacity-baking-app.iml" filepath="$PROJECT_DIR$/udacity-baking-app.iml" />
     </modules>
   </component>
 </project>

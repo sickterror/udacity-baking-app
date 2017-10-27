@@ -17,4 +17,5 @@
     <string name="add_recipe_to_widget">Add recipe to widget</string>
     <string name="add_recipe_ingredients_to_widget">Add your recipe ingredients to widget.</string>
     <string name="recipe_title_defualt_value">Recipe</string>
+    <string name="main_activty_loading_error">There was an error while loading data. Check your network connection</string>
 </resources>

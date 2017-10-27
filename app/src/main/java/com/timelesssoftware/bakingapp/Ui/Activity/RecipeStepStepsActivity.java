@@ -81,7 +81,7 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
         recipeListModel = getIntent().getParcelableExtra(MainActivity.SELECTED_RECIPE_MODEL);
         bottomSheetLayout = findViewById(R.id.linear_layout_bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
-        mTwoPane = findViewById(R.id.two_pain_view) != null;
+        mTwoPane = getResources().getBoolean(R.bool.isTablet);
         if (mTwoPane) {
             initTwoPainView();
         } else {

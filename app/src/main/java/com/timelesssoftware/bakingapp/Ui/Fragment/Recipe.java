@@ -109,7 +109,6 @@ public class Recipe extends Fragment {
         mRecipeImageView = view.findViewById(R.id.recipe_iv);
 
 
-
         RecipeMediaType mediaType = getRecipeMediaType(recipeStepModel);
 
         if (mediaType instanceof RecipeImageType) {
@@ -183,8 +182,16 @@ public class Recipe extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if (player != null)
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (player != null) {
+            player.stop();
             player.release();
+        }
     }
 
     @Override
@@ -198,7 +205,10 @@ public class Recipe extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(PLAYER_POSITION, player.getCurrentPosition());
+        //If there is an image instead of the video
+        if (player != null) {
+            outState.putLong(PLAYER_POSITION, player.getCurrentPosition());
+        }
     }
 
     /**
