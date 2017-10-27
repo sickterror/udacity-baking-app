@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">BakingApp</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_recipe_steps">RecipeStepsActivity</string>
+    <string name="title_activity_recipe">RecipeActivity</string>
+    <bool name="isTablet">false</bool>
+    <string name="content_authority">com.timelesssoftware.bakingapp</string>
+    <string name="add_to_widget">Add to widget</string>
+    <string name="add_widget_snackbar">Your recipe was added to widget.</string>
+    <string name="your_selected_recipe_will_show_here">Your selected recipe will show here</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="previous_step">Previous Step</string>
+    <string name="next_step">Next Step</string>
+    <string name="add_recipe_to_widget">Add recipe to widget</string>
+    <string name="add_recipe_ingredients_to_widget">Add your recipe ingredients to widget.</string>
+    <string name="recipe_title_defualt_value">Recipe</string>
+</resources>
