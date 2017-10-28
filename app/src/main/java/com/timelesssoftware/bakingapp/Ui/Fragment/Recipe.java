@@ -65,7 +65,7 @@ public class Recipe extends Fragment {
     private Bundle mSavedInstance;
     private ImageView mRecipeImageView;
     private RecipeMediaType mediaType;
-    private long mMediaTimestamp = 0;
+    private long mMediaTimestamp;
 
     public Recipe() {
         // Required empty public constructor
@@ -144,7 +144,6 @@ public class Recipe extends Fragment {
     public void initExoplayer(String url) {
         if (url == null || url.isEmpty())
             return;
-        Handler mainHandler = new Handler();
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory =
                 new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -164,9 +163,12 @@ public class Recipe extends Fragment {
 
         mSimpleExoPlayer.setPlayer(player);
         if (mSavedInstance != null) {
+            long positin = mSavedInstance.getLong(PLAYER_POSITION,0);
             player.seekTo(mSavedInstance.getLong(PLAYER_POSITION, 0));
-            player.setPlayWhenReady(true);
+        } else {
+            player.seekTo(mMediaTimestamp);
         }
+        player.setPlayWhenReady(true);
     }
 
     void initImageView(String imageUrl) {
@@ -189,14 +191,9 @@ public class Recipe extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mediaType instanceof RecipeVideoType) {
+        //If we are coming from background, the player will be null
+        if (player == null)
             initExoplayer(mediaType.getUrl());
-            //We go back to where the user left the video, if there is a player instance
-            //If there is no mMediaTimestamp value we go back to the start of the video
-            if (player != null) {
-                player.seekTo(mMediaTimestamp);
-            }
-        }
     }
 
     @Override
@@ -206,6 +203,8 @@ public class Recipe extends Fragment {
             mMediaTimestamp = player.getCurrentPosition();
             player.stop();
             player.release();
+            //Setting the player to null so we know that we are coming from background
+            player = null;
         }
     }
 
@@ -220,10 +219,11 @@ public class Recipe extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //If there is an image instead of the video
-        if (player != null) {
-            outState.putLong(PLAYER_POSITION, player.getCurrentPosition());
-        }
+        //Put the current time stamp
+        //No ned to check mMediaTimestamp, if its not set the value will be 0
+        //and the video will start from begining
+        outState.putLong(PLAYER_POSITION, mMediaTimestamp);
+
     }
 
     /**
@@ -246,16 +246,13 @@ public class Recipe extends Fragment {
     private RecipeMediaType getRecipeMediaType(RecipeStepsModel recipeStepsModel) {
         RecipeVideoType recipeVideoType = new RecipeVideoType();
         RecipeImageType recipeImageType = new RecipeImageType();
-        if (recipeStepsModel.videoURL.isEmpty()) {
-            if (recipeStepsModel.thumbnailURL.contains(".mp4")) {
-                recipeVideoType.setUrl(recipeStepsModel.thumbnailURL);
-                return recipeVideoType;
-            }
-        } else {
+        //The video url is not empty so we return the RcipeVideoType
+        if (!recipeStepsModel.videoURL.isEmpty()) {
             recipeVideoType.setUrl(recipeStepsModel.videoURL);
             return recipeVideoType;
         }
-
+        //There is no video, we show the image
+        //If there is no image the Glide placeholder method will handle it
         recipeImageType.setUrl(recipeStepsModel.thumbnailURL);
         return recipeImageType;
     }

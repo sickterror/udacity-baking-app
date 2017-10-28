@@ -87,7 +87,7 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
         } else {
             initMobileView();
         }
-        mAddToWidghetBtn.setOnClickListener(this);
+       // mAddToWidghetBtn.setOnClickListener(this);
         ingredientRv = findViewById(R.id.ingredient_rv);
         recipeIngredientModels = recipeListModel.ingredients;
         recipeIngreidentAdapter = new RecipeIngreidentAdapter(recipeIngredientModels);
@@ -105,12 +105,14 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
 
     private void initTwoPainView() {
         mAddToWidghetBtn = findViewById(R.id.add_recipe_to_widget_tablet);
+        mAddToWidghetBtn.setOnClickListener(this);
         addRecipeFragment(R.id.recipe_container, "");
         addRecipeStepsFragment(R.id.recipe_list_container);
     }
 
     private void initMobileView() {
         mAddToWidghetBtn = findViewById(R.id.add_recipe_to_widget);
+        mAddToWidghetBtn.setOnClickListener(this);
         addRecipeStepsFragment(R.id.single_view_holder);
         bottomSheetBehavior.setBottomSheetCallback(bottomSheetMobileCallback);
         initShowcaseView();
