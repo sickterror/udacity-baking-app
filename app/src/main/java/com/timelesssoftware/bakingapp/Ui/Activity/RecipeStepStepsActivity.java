@@ -96,7 +96,6 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
         } else {
             initMobileView();
         }
-        bottomSheetBehavior.setBottomSheetCallback(bottomSheetMobileCallback);
         // mAddToWidghetBtn.setOnClickListener(this);
         ingredientRv = findViewById(R.id.ingredient_rv);
         recipeIngredientModels = recipeListModel.ingredients;

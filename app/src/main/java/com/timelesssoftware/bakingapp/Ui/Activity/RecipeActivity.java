@@ -21,6 +21,8 @@ public class RecipeActivity extends AppCompatActivity implements Recipe.OnRecipe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getResources().getBoolean(R.bool.isTablet))
+            finish();
         setContentView(R.layout.activity_recipe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
