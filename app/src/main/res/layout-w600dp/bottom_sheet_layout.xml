@@ -24,6 +24,17 @@
             android:textAlignment="textStart"
             android:textColor="@color/md_white_1000"
             android:textSize="16sp" />
+
+        <ImageButton
+            android:alpha="0"
+            android:id="@+id/close_bottom_sheet"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_close_black_24dp" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView

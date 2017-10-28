@@ -46,7 +46,7 @@ public class RecipeActivity extends AppCompatActivity implements Recipe.OnRecipe
         if (nextModel != null) {
             int nextStep = recipeSteps.id + 1;
             int size = nextModel.size();
-            if (size - 1 > nextStep) {
+            if (size > nextStep) {
                 Log.d("onNext", "listSize: " + nextModel.size() + " nextStep: " + nextStep);
                 try {
                     recipeSteps = nextModel.get((nextStep));

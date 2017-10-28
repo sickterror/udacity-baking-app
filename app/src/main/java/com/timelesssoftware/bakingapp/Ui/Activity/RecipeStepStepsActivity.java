@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
@@ -25,6 +26,7 @@ import com.timelesssoftware.bakingapp.Ui.Adapter.RecipeIngreidentAdapter;
 import com.timelesssoftware.bakingapp.Ui.Fragment.Recipe;
 import com.timelesssoftware.bakingapp.Ui.Fragment.RecipeSteps;
 import com.timelesssoftware.bakingapp.Ui.Widget.BakingWidgetService;
+import com.timelesssoftware.bakingapp.Utils.Helpers.GeneralHelpers;
 import com.timelesssoftware.bakingapp.Utils.Retrofit.IBakingApi;
 import com.timelesssoftware.bakingapp.Utils.Retrofit.Model.RecipeIngredientModel;
 import com.timelesssoftware.bakingapp.Utils.Retrofit.Model.RecipeListModel;
@@ -67,7 +69,10 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
     private List<RecipeIngredientModel> recipeIngredientModels;
     private RecipeIngreidentAdapter recipeIngreidentAdapter;
     private Bundle mSavedInstance;
+    private View mCloseIngredientBottomSheet;
 
+
+    private View mBottomSheetToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +86,18 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
         recipeListModel = getIntent().getParcelableExtra(MainActivity.SELECTED_RECIPE_MODEL);
         bottomSheetLayout = findViewById(R.id.linear_layout_bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+        mBottomSheetToolbar = findViewById(R.id.bottom_sheet_toolbar);
+        mBottomSheetToolbar.setOnClickListener(this);
+        mCloseIngredientBottomSheet = findViewById(R.id.close_bottom_sheet);
+        mCloseIngredientBottomSheet.setOnClickListener(this);
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         if (mTwoPane) {
             initTwoPainView();
         } else {
             initMobileView();
         }
-       // mAddToWidghetBtn.setOnClickListener(this);
+        bottomSheetBehavior.setBottomSheetCallback(bottomSheetMobileCallback);
+        // mAddToWidghetBtn.setOnClickListener(this);
         ingredientRv = findViewById(R.id.ingredient_rv);
         recipeIngredientModels = recipeListModel.ingredients;
         recipeIngreidentAdapter = new RecipeIngreidentAdapter(recipeIngredientModels);
@@ -114,7 +124,6 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
         mAddToWidghetBtn = findViewById(R.id.add_recipe_to_widget);
         mAddToWidghetBtn.setOnClickListener(this);
         addRecipeStepsFragment(R.id.single_view_holder);
-        bottomSheetBehavior.setBottomSheetCallback(bottomSheetMobileCallback);
         initShowcaseView();
     }
 
@@ -181,11 +190,24 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
             Snackbar.make(findViewById(R.id.coordinator), R.string.add_widget_snackbar, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
+        if (v.getId() == R.id.bottom_sheet_toolbar) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+
+        if (v.getId() == R.id.close_bottom_sheet) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
     }
 
     private BottomSheetBehavior.BottomSheetCallback bottomSheetMobileCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                float margin = GeneralHelpers.dpToPx(16, RecipeStepStepsActivity.this.getApplicationContext());
+                mCloseIngredientBottomSheet.animate().setInterpolator(new BounceInterpolator()).setDuration(500).alpha(1).translationX(-margin);
+            } else {
+                mCloseIngredientBottomSheet.animate().alpha(0).translationX(0);
+            }
         }
 
         @Override
