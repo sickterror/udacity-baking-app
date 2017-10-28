@@ -77,7 +77,7 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
         BakingApp.getNetComponent().inject(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recipeListModel = getIntent().getParcelableExtra(MainActivity.SELECTED_RECIPE_MODEL);
         bottomSheetLayout = findViewById(R.id.linear_layout_bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
@@ -102,21 +102,6 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }*/
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private void initTwoPainView() {
         mAddToWidghetBtn = findViewById(R.id.add_recipe_to_widget_tablet);
@@ -225,6 +210,17 @@ public class RecipeStepStepsActivity extends AppCompatActivity implements Recipe
                     .hideOnTouchOutside()
                     .build();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.timelesssoftware.bakingapp.R;
 import com.timelesssoftware.bakingapp.Ui.Fragment.Recipe;
@@ -23,7 +24,7 @@ public class RecipeActivity extends AppCompatActivity implements Recipe.OnRecipe
         setContentView(R.layout.activity_recipe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recipeSteps = getIntent().getExtras().getParcelable(RecipeStepStepsActivity.SELECTED_RECIPE_STEPS);
         nextModel = getIntent().getExtras().getParcelableArrayList(RecipeStepStepsActivity.NEXT_STEPS);
 
@@ -78,5 +79,16 @@ public class RecipeActivity extends AppCompatActivity implements Recipe.OnRecipe
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

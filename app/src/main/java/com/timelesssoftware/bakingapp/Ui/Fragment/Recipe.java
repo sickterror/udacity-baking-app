@@ -64,6 +64,8 @@ public class Recipe extends Fragment {
     private SimpleExoPlayer player;
     private Bundle mSavedInstance;
     private ImageView mRecipeImageView;
+    private RecipeMediaType mediaType;
+    private long mMediaTimestamp = 0;
 
     public Recipe() {
         // Required empty public constructor
@@ -109,8 +111,7 @@ public class Recipe extends Fragment {
         mRecipeImageView = view.findViewById(R.id.recipe_iv);
 
 
-        RecipeMediaType mediaType = getRecipeMediaType(recipeStepModel);
-
+        mediaType = getRecipeMediaType(recipeStepModel);
         if (mediaType instanceof RecipeImageType) {
             initImageView(mediaType.getUrl());
         } else {
@@ -186,9 +187,23 @@ public class Recipe extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (mediaType instanceof RecipeVideoType) {
+            initExoplayer(mediaType.getUrl());
+            //We go back to where the user left the video, if there is a player instance
+            //If there is no mMediaTimestamp value we go back to the start of the video
+            if (player != null) {
+                player.seekTo(mMediaTimestamp);
+            }
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (player != null) {
+            mMediaTimestamp = player.getCurrentPosition();
             player.stop();
             player.release();
         }
